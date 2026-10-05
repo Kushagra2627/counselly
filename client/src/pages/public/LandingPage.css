@@ -1,0 +1,365 @@
+/* Landing Page Styles */
+
+/* 1. Hero Section */
+.hero-section {
+  position: relative;
+  height: 100vh;
+  min-height: 600px;
+  background-color: var(--color-black);
+  display: flex;
+  align-items: center;
+  color: var(--color-white);
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(28,28,30,0.4) 0%, var(--color-black) 100%);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding-top: var(--space-20);
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 5vw + 1rem, 5rem);
+  line-height: 1.1;
+  margin-bottom: var(--space-6);
+  color: var(--color-white);
+}
+
+.hero-subtitle {
+  font-size: var(--text-xl);
+  color: var(--color-gray-light);
+  margin-bottom: var(--space-8);
+  max-width: 600px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.btn-hero-secondary {
+  color: var(--color-white) !important;
+  border-color: var(--color-gray-dark) !important;
+}
+
+.btn-hero-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Common Section */
+.section-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-4xl);
+  margin-bottom: var(--space-12);
+  text-align: center;
+}
+
+/* 2. Trust Section */
+.trust-section {
+  background-color: var(--color-off-white);
+  padding: var(--space-8) 0;
+  border-bottom: 1px solid var(--color-gray-light);
+  text-align: center;
+}
+
+.trust-label {
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: var(--text-xs);
+  color: var(--color-gray-dark);
+  margin-bottom: var(--space-6);
+}
+
+.trust-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-6);
+}
+
+.trust-pill {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  color: var(--color-charcoal);
+  position: relative;
+}
+
+.trust-pill:not(:last-child)::after {
+  content: '•';
+  position: absolute;
+  right: -1rem;
+  color: var(--color-gray-light);
+}
+
+/* 3. How It Works */
+.how-section {
+  background-color: var(--color-white);
+}
+
+.how-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-12);
+}
+
+.how-step {
+  position: relative;
+}
+
+.how-step-num {
+  font-family: var(--font-serif);
+  font-size: var(--text-5xl);
+  color: var(--color-gray-light);
+  display: block;
+  margin-bottom: var(--space-4);
+  line-height: 1;
+}
+
+.how-step h3 {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-3);
+}
+
+.how-step p {
+  color: var(--color-gray-dark);
+}
+
+/* 4. Legal Expertise */
+.expertise-section {
+  background-color: var(--color-off-white);
+}
+
+.expertise-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-6);
+}
+
+.expertise-card {
+  background-color: var(--color-white);
+  padding: var(--space-6);
+  border: 1px solid var(--color-gray-light);
+  border-radius: var(--radius-lg);
+  transition: box-shadow var(--transition-base);
+}
+
+.expertise-card:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.expertise-card h4 {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-2);
+}
+
+.expertise-card p {
+  color: var(--color-gray-dark);
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+/* 5. Lawyer Preview Cards */
+.preview-section {
+  background-color: var(--color-white);
+}
+
+.preview-header {
+  text-align: center;
+  margin-bottom: var(--space-12);
+}
+
+.preview-header p {
+  color: var(--color-gray-dark);
+  font-size: var(--text-lg);
+}
+
+.lawyer-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-8);
+}
+
+.lawyer-card {
+  border: 1px solid var(--color-gray-light);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  background-color: var(--color-white);
+  position: relative;
+}
+
+.lawyer-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.lawyer-name {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-1);
+}
+
+.lawyer-title {
+  color: var(--color-gray-dark);
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+.lawyer-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.lawyer-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  border-top: 1px solid var(--color-gray-subtle);
+  padding-top: var(--space-4);
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+}
+
+.detail-label {
+  color: var(--color-gray-mid);
+}
+
+.detail-value {
+  font-weight: 500;
+  color: var(--color-charcoal);
+}
+
+.lawyer-demo-label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--color-gray-subtle);
+  color: var(--color-gray-dark);
+  font-size: 10px;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-bottom-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-xl);
+}
+
+/* 6. Split CTA Section */
+.split-section {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.split-side {
+  flex: 1;
+  min-width: 300px;
+  padding: var(--space-16) var(--space-8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.split-content {
+  max-width: 400px;
+}
+
+.split-side h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-4xl);
+  margin-bottom: var(--space-4);
+}
+
+.split-side p {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-6);
+}
+
+.split-side ul {
+  margin-bottom: var(--space-8);
+}
+
+.split-side li {
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.split-side li::before {
+  content: '✓';
+}
+
+.split-startup {
+  background-color: var(--color-charcoal);
+  color: var(--color-white);
+}
+
+.split-startup h2, .split-startup p {
+  color: var(--color-white);
+}
+
+.split-startup li::before {
+  color: var(--color-accent-light);
+}
+
+.split-lawyer {
+  background-color: var(--color-ivory);
+}
+
+.split-lawyer li::before {
+  color: var(--color-accent);
+}
+
+/* 7. Workflow */
+.workflow-section {
+  background-color: var(--color-white);
+}
+
+.workflow-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  color: var(--color-charcoal);
+}
+
+.workflow-arrow {
+  color: var(--color-gray-mid);
+}
+
+/* 8. Final CTA */
+.final-cta {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  padding: var(--space-24) var(--space-4);
+}
+
+.final-cta h2 {
+  color: var(--color-white);
+  font-family: var(--font-serif);
+  font-size: var(--text-4xl);
+  margin-bottom: var(--space-8);
+}
+
+.text-center {
+  text-align: center;
+}

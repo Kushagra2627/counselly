@@ -1,0 +1,65 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  z-index: 100;
+  transition: all var(--transition-base);
+  background-color: transparent;
+  color: var(--color-white); /* Assumes landing hero is dark */
+}
+
+.navbar-scrolled {
+  background-color: var(--color-white);
+  color: var(--color-black);
+  box-shadow: var(--shadow-sm);
+}
+
+.navbar-logo {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: inherit;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.navbar-link {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: inherit;
+  opacity: 0.9;
+  transition: opacity var(--transition-fast);
+}
+
+.navbar-link:hover {
+  opacity: 1;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* Inherit link colors when not scrolled on dark hero, button text needs explicit override if we want ghost button to look good on dark bg, but since we rely on design, let's keep it simple. */
+.navbar:not(.navbar-scrolled) .btn-ghost {
+  color: var(--color-white);
+}
+
+.navbar:not(.navbar-scrolled) .btn-ghost:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+  }
+}

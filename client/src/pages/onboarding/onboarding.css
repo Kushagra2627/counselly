@@ -1,0 +1,382 @@
+/* Onboarding pages — shared between Startup and Lawyer onboarding */
+
+.onboarding-loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.onboarding-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--color-gray-light);
+  border-top-color: var(--color-charcoal);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.onboarding-page {
+  min-height: 100vh;
+  background: var(--color-ivory);
+  display: flex;
+  flex-direction: column;
+}
+
+.onboarding-header {
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-gray-light);
+  padding: var(--space-5) var(--space-8);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.onboarding-wordmark {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-black);
+  letter-spacing: -0.02em;
+}
+
+.onboarding-main {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--space-10) var(--space-6);
+}
+
+.onboarding-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-light);
+  border-radius: var(--radius-xl);
+  padding: var(--space-10);
+  width: 100%;
+  max-width: 680px;
+  box-shadow: var(--shadow-md);
+}
+
+.onboarding-card--lawyer {
+  max-width: 740px;
+}
+
+/* Progress indicator */
+.onboarding-progress {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-10);
+  overflow-x: auto;
+  padding-bottom: var(--space-2);
+}
+
+.progress-step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.progress-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-gray-light);
+  color: var(--color-gray-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  flex-shrink: 0;
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+.progress-step.active .progress-dot {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.progress-step.done .progress-dot {
+  background: var(--color-success);
+  color: var(--color-white);
+}
+
+.progress-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-gray-mid);
+  white-space: nowrap;
+}
+
+.progress-step.active .progress-label {
+  color: var(--color-black);
+}
+
+.progress-step.done .progress-label {
+  color: var(--color-gray-dark);
+}
+
+.progress-line {
+  width: 40px;
+  height: 1px;
+  background: var(--color-gray-light);
+  flex-shrink: 0;
+  margin: 0 var(--space-2);
+}
+
+/* Step content */
+.onboarding-step h1 {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  font-weight: 500;
+  color: var(--color-black);
+  margin-bottom: var(--space-2);
+}
+
+.step-subtitle {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-gray-mid);
+  margin-bottom: var(--space-8);
+  line-height: 1.6;
+}
+
+.step-note {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-gray-mid);
+  font-style: italic;
+  margin-top: var(--space-3);
+  text-align: center;
+}
+
+/* Form grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+  margin-bottom: var(--space-8);
+}
+
+.form-field--full {
+  grid-column: 1 / -1;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-field label {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-charcoal);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-black);
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  width: 100%;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+  appearance: none;
+  resize: vertical;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--color-charcoal);
+  box-shadow: 0 0 0 3px rgba(28,28,30,0.08);
+}
+
+.form-field.has-error input,
+.form-field.has-error select {
+  border-color: var(--color-error);
+}
+
+.field-error {
+  font-size: var(--text-xs);
+  color: var(--color-error);
+  font-family: var(--font-sans);
+}
+
+/* Chip multi-select */
+.chip-select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.chip {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-gray-light);
+  border-radius: var(--radius-full);
+  background: var(--color-white);
+  color: var(--color-gray-dark);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.chip:hover {
+  border-color: var(--color-charcoal);
+  color: var(--color-charcoal);
+}
+
+.chip--selected {
+  background: var(--color-black);
+  color: var(--color-white);
+  border-color: var(--color-black);
+}
+
+/* Actions */
+.onboarding-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-4);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-gray-light);
+}
+
+.btn-onboarding-primary {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 600;
+  padding: var(--space-3) var(--space-8);
+  background: var(--color-black);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-onboarding-primary:hover:not(:disabled) {
+  background: var(--color-charcoal);
+  transform: translateY(-1px);
+}
+
+.btn-onboarding-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-onboarding-secondary {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 500;
+  padding: var(--space-3) var(--space-6);
+  background: transparent;
+  color: var(--color-gray-dark);
+  border: 1px solid var(--color-gray-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.btn-onboarding-secondary:hover {
+  border-color: var(--color-charcoal);
+  color: var(--color-black);
+}
+
+/* Review step */
+.onboarding-step--review {
+  text-align: center;
+}
+
+.review-check,
+.verification-badge .verification-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-success-light);
+  color: var(--color-success);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-2xl);
+  margin: 0 auto var(--space-6);
+}
+
+.verification-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.verification-badge .verification-icon {
+  background: var(--color-warning-light);
+  color: var(--color-warning);
+}
+
+.verification-badge span {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-warning);
+  background: var(--color-warning-light);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+}
+
+.review-summary {
+  background: var(--color-ivory);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin: var(--space-6) 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.review-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+}
+
+.review-label {
+  color: var(--color-gray-mid);
+  font-weight: 500;
+}
+
+.review-value {
+  color: var(--color-charcoal);
+  font-weight: 600;
+}
+
+.onboarding-step--review .onboarding-actions {
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .onboarding-card { padding: var(--space-6); }
+  .progress-label { display: none; }
+}
