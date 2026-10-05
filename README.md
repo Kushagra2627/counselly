@@ -26,7 +26,7 @@
 
 ---
 
-## 🚀 Core Features Built (Stage 1)
+## 🚀 Core Features Built (Stage 1 + 2 + 3)
 
 ### 1. Luxury Editorial Public Landing Page
 - **Cinematic Hero**: Serif headlines, refined typography, and high-contrast call-to-actions for startups and lawyers.
@@ -64,7 +64,14 @@
 - **Bar Verification Tracker**: State Bar / Law Society credential submission and review status tracking (`PENDING`, `SUBMITTED`, `VERIFIED`, `REJECTED`).
 - **Account Settings**: Password management and session security.
 
-### 6. Configurable In-Database Matching Engine (`run_matching`)
+### 6. Verification & Admin Workflow (Stage 3)
+- **Lawyer Verification**: Bar credential submission form with real DB-backed state machine.
+- **Startup Verification**: Business registration and representative submission flow.
+- **Admin Verification Queue**: Admin-only dashboard listing all pending submissions with filter tabs (All / Submitted / Verified / Rejected).
+- **Admin Review Panel**: Approve or reject individual submissions with optional rejection reason.
+- **Verification-Aware Matching**: Verified badges on matched counsel cards; demo profiles clearly labeled.
+
+### 7. Configurable In-Database Matching Engine (`run_matching`)
 Calculates two-sided compatibility dynamically inside PostgreSQL on request submission:
 - **Mandatory Eligibility**: Practice Area match + Jurisdiction match.
 - **Budget Compatibility (+20 pts)**: Overlap condition $\max(\text{budgetMin}, \text{retainerMin}) \le \min(\text{budgetMax}, \text{retainerMax})$ for matching currencies.
@@ -76,16 +83,22 @@ Calculates two-sided compatibility dynamically inside PostgreSQL on request subm
 
 ---
 
-## 📂 Project Structure & File Manifest
+## 📂 Project Structure
 
 ```text
 fractional(antigravity)/
 ├── .insforge/
 │   └── project.json                  # Linked InsForge project configuration
-├── migrations/
-│   └── 20261002004434_init-counselly-schema.sql  # Database DDL, RLS policies, seed data & RPC
-├── client/
-│   ├── public/                       # Static public assets
+├── backend/
+│   ├── migrations/                   # PostgreSQL migration SQL files
+│   │   ├── 20261002004434_init-counselly-schema.sql  # Core schema, RLS, seed data & RPC
+│   │   └── 20261003_stage3_verification.sql          # Stage 3 — verification table
+│   └── functions/                    # InsForge Edge Functions (future use)
+├── docs/
+│   └── architecture/
+│       └── database-schema.md        # Full schema reference (tables, RLS, RPCs)
+├── frontend/
+│   ├── public/                       # Static public assets (favicon.svg)
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── layout/
@@ -95,82 +108,93 @@ fractional(antigravity)/
 │   │   │   └── ui/
 │   │   │       ├── Avatar.tsx / Avatar.css        # Initials/image avatar component
 │   │   │       ├── Badge.tsx / Badge.css          # Pill badge with variants
-│   │   │       ├── Button.tsx / Button.css        # Luxury styled buttons (primary, secondary, ghost)
+│   │   │       ├── Button.tsx / Button.css        # Luxury styled buttons
 │   │   │       ├── Card.tsx / Card.css            # Bordered card containers
-│   │   │       ├── EmptyState.tsx / EmptyState.css # Empty state placeholders
-│   │   │       ├── Icon.tsx / Icon.css            # Inline SVG icon library
+│   │   │       ├── EmptyState.tsx / EmptyState.css
+│   │   │       ├── Icon.tsx                       # Inline SVG icon library
 │   │   │       ├── Input.tsx / Input.css          # Form inputs with labels & error states
-│   │   │       ├── LoadingState.tsx / LoadingState.css # Loading spinners
+│   │   │       ├── LoadingState.tsx / LoadingState.css
 │   │   │       ├── Modal.tsx / Modal.css          # Accessible dialog modals
-│   │   │       ├── MultiSelect.tsx / MultiSelect.css # Tag-based multi-selector
-│   │   │       ├── PageHeader.tsx / PageHeader.css # Standardized dashboard headers
-│   │   │       ├── ProgressBar.tsx / ProgressBar.css # Onboarding step indicators
-│   │   │       ├── Select.tsx / Select.css        # Styled dropdown selects
-│   │   │       ├── StatusBadge.tsx / StatusBadge.css # Color-coded status indicators
-│   │   │       └── Table.tsx / Table.css          # Responsive data tables
+│   │   │       ├── MultiSelect.tsx / MultiSelect.css
+│   │   │       ├── PageHeader.tsx / PageHeader.css
+│   │   │       ├── ProgressBar.tsx / ProgressBar.css
+│   │   │       ├── Select.tsx / Select.css
+│   │   │       ├── StatusBadge.tsx / StatusBadge.css
+│   │   │       └── Table.tsx / Table.css
 │   │   ├── config/
 │   │   │   └── constants.ts          # Practice areas, jurisdictions, currencies, nav menus
 │   │   ├── features/
 │   │   │   └── auth/
 │   │   │       ├── AuthContext.tsx   # React Auth context with InsForge session sync
-│   │   │       └── ProtectedRoute.tsx # Route guard for authentication and onboarding
+│   │   │       └── ProtectedRoute.tsx
+│   │   ├── hooks/
+│   │   │   ├── useAuth.ts            # Auth hook (extracted from AuthContext)
+│   │   │   └── index.ts              # Barrel export
 │   │   ├── layouts/
-│   │   │   ├── AuthLayout.tsx        # Centered auth card layout
+│   │   │   ├── AuthLayout.tsx
 │   │   │   ├── DashboardLayout.tsx   # Topbar + collapsible responsive sidebar
-│   │   │   └── PublicLayout.tsx      # Public header + content + footer wrapper
+│   │   │   └── PublicLayout.tsx
 │   │   ├── pages/
+│   │   │   ├── admin/
+│   │   │   │   ├── AdminVerificationQueuePage.tsx
+│   │   │   │   ├── AdminVerificationReviewPage.tsx
+│   │   │   │   └── admin.css
 │   │   │   ├── auth/
-│   │   │   │   ├── LoginPage.tsx / auth.css       # Sign in page
-│   │   │   │   ├── RegisterPage.tsx               # Dual-role signup page
-│   │   │   │   ├── ForgotPasswordPage.tsx         # Password recovery
-│   │   │   │   └── ResetPasswordPage.tsx          # Password reset entry
+│   │   │   │   ├── LoginPage.tsx / auth.css
+│   │   │   │   ├── RegisterPage.tsx
+│   │   │   │   ├── ForgotPasswordPage.tsx
+│   │   │   │   └── ResetPasswordPage.tsx
 │   │   │   ├── errors/
-│   │   │   │   ├── NotFoundPage.tsx               # 404 handler
-│   │   │   │   └── UnauthorizedPage.tsx           # 403 handler
+│   │   │   │   ├── NotFoundPage.tsx
+│   │   │   │   └── UnauthorizedPage.tsx
 │   │   │   ├── lawyer/
-│   │   │   │   ├── LawyerOverviewPage.tsx         # Lawyer statistics & active matches
-│   │   │   │   ├── LawyerRequestsPage.tsx         # Open marketplace requirements
-│   │   │   │   ├── LawyerMatchesPage.tsx          # Match invitations & accept/decline
-│   │   │   │   ├── LawyerProfileEditorPage.tsx    # Counsel bio, rates & jurisdictions
-│   │   │   │   ├── LawyerVerificationPage.tsx     # State Bar verification workflow
-│   │   │   │   └── LawyerSettingsPage.tsx         # Account security settings
+│   │   │   │   ├── LawyerOverviewPage.tsx
+│   │   │   │   ├── LawyerRequestsPage.tsx
+│   │   │   │   ├── LawyerMatchesPage.tsx
+│   │   │   │   ├── LawyerProfileEditorPage.tsx
+│   │   │   │   ├── LawyerVerificationPage.tsx
+│   │   │   │   └── LawyerSettingsPage.tsx
 │   │   │   ├── onboarding/
-│   │   │   │   ├── StartupOnboardingPage.tsx      # 3-step startup wizard
-│   │   │   │   ├── LawyerOnboardingPage.tsx       # 4-step lawyer wizard
-│   │   │   │   └── onboarding.css                 # Onboarding design styles
+│   │   │   │   ├── StartupOnboardingPage.tsx
+│   │   │   │   ├── LawyerOnboardingPage.tsx
+│   │   │   │   └── onboarding.css
 │   │   │   ├── public/
-│   │   │   │   ├── LandingPage.tsx / LandingPage.css # High-converting editorial landing page
+│   │   │   │   ├── LandingPage.tsx / LandingPage.css
 │   │   │   └── startup/
-│   │   │       ├── StartupOverviewPage.tsx        # Startup request counts & status
-│   │   │       ├── LegalRequestsPage.tsx          # Request management table
-│   │   │       ├── CreateLegalRequestPage.tsx     # Matter requirement creation form
-│   │   │       ├── LegalRequestDetailPage.tsx     # Matter details & matched counsel
-│   │   │       ├── MatchedCounselPage.tsx         # Directory & counsel filtering
-│   │   │       ├── LawyerProfileViewPage.tsx      # Counsel profile & engagement request
-│   │   │       ├── CompanyProfilePage.tsx         # Company info editor
-│   │   │       └── StartupSettingsPage.tsx        # Account security settings
+│   │   │       ├── StartupOverviewPage.tsx
+│   │   │       ├── LegalRequestsPage.tsx
+│   │   │       ├── CreateLegalRequestPage.tsx
+│   │   │       ├── LegalRequestDetailPage.tsx
+│   │   │       ├── MatchedCounselPage.tsx
+│   │   │       ├── LawyerProfileViewPage.tsx
+│   │   │       ├── CompanyProfilePage.tsx
+│   │   │       ├── StartupSettingsPage.tsx
+│   │   │       └── StartupVerificationPage.tsx
 │   │   ├── services/
 │   │   │   ├── insforge.ts           # InsForge SDK client initialization
-│   │   │   ├── auth.service.ts       # Auth, session, and role profile operations
-│   │   │   ├── startup.service.ts    # Startup profile and metrics queries
-│   │   │   ├── lawyer.service.ts     # Lawyer profile, filters, and directory queries
-│   │   │   ├── legalRequest.service.ts # Legal matter CRUD and submit with matching trigger
-│   │   │   └── match.service.ts      # Two-sided match queries and status updates
+│   │   │   ├── index.ts              # Barrel export for all services
+│   │   │   ├── auth.service.ts
+│   │   │   ├── startup.service.ts
+│   │   │   ├── lawyer.service.ts
+│   │   │   ├── legalRequest.service.ts
+│   │   │   ├── match.service.ts
+│   │   │   └── verification.service.ts
 │   │   ├── styles/
-│   │   │   ├── reset.css             # Modern CSS reset
-│   │   │   ├── typography.css        # Serif + sans-serif font styling
-│   │   │   ├── utilities.css         # Flex, grid, and layout utility classes
-│   │   │   └── variables.css         # Design tokens (charcoal, navy, gold, ivory)
+│   │   │   ├── dashboard.css         # Shared dashboard page styles (global import in main.tsx)
+│   │   │   ├── reset.css
+│   │   │   ├── typography.css
+│   │   │   ├── utilities.css
+│   │   │   └── variables.css         # Design tokens (charcoal, burgundy, ivory)
 │   │   ├── utils/
 │   │   │   └── formatters.ts         # Currency and date formatters
 │   │   ├── App.tsx                   # Main route configuration
-│   │   └── main.tsx                  # React DOM mount point
+│   │   └── main.tsx                  # React DOM mount point + global CSS imports
 │   ├── .env                          # Local frontend environment variables
-│   ├── package.json                  # Dependencies: React 19, @insforge/sdk, Vite
-│   ├── tsconfig.json                 # TypeScript project configuration
+│   ├── package.json
+│   ├── tsconfig.json
 │   ├── vercel.json                   # SPA routing rewrites for live deployment
-│   └── vite.config.ts                # Vite build and dev configuration
-├── .gitignore                        # Git exclusion rules
+│   └── vite.config.ts
+├── .gitignore
 ├── AGENTS.md                         # InsForge platform guidance for AI coding agents
 ├── insforge.toml                     # Declarative project and auth configuration
 └── README.md                         # This documentation file
@@ -187,12 +211,12 @@ fractional(antigravity)/
 ### 1. Clone & Install
 ```bash
 git clone <repo-url>
-cd fractional(antigravity)/client
+cd fractional(antigravity)/frontend
 npm install
 ```
 
 ### 2. Configure Environment Variables
-A `.env` file is already pre-configured in `client/.env` pointing to the live InsForge cloud backend:
+A `.env` file is already pre-configured in `frontend/.env` pointing to the live InsForge cloud backend:
 ```env
 VITE_INSFORGE_URL=https://a2a2t997.ap-southeast.insforge.app
 VITE_INSFORGE_ANON_KEY=anon_9c210eedc78d68b8b92fffc1dbc7db52dc31a52fa197de0c066a180dd4128444
@@ -217,7 +241,7 @@ To redeploy the frontend application after making changes:
 
 ```bash
 # Run from the repository root:
-npx -y @insforge/cli deployments deploy client
+npx -y @insforge/cli deployments deploy frontend
 ```
 
 This bundles the source files, pushes them to InsForge hosting, and refreshes the live site at:  
@@ -227,7 +251,7 @@ This bundles the source files, pushes them to InsForge hosting, and refreshes th
 
 ## 🛡️ Database Management (InsForge CLI)
 
-The database runs directly on InsForge PostgreSQL. You can inspect or manage it with the CLI:
+The database runs directly on InsForge PostgreSQL. Migration files live in `backend/migrations/`.
 
 ```bash
 # View all tables
@@ -236,9 +260,8 @@ npx -y @insforge/cli db query "SELECT table_name FROM information_schema.tables 
 # Query seeded demo lawyers
 npx -y @insforge/cli db query "SELECT name, title, currency, retainer_min, retainer_max FROM public.lawyers"
 
-# Create a new migration
-npx -y @insforge/cli db migrations new <migration-name>
-
-# Apply pending migrations
-npx -y @insforge/cli db migrations up --all
+# Apply a migration file
+npx -y @insforge/cli db import backend/migrations/<filename>.sql
 ```
+
+See [`docs/architecture/database-schema.md`](docs/architecture/database-schema.md) for full schema reference.
